@@ -1,0 +1,49 @@
+font-family = "Fira Code Regular"
+theme = "Kanagawa Wave"
+background-opacity = 0.90 
+background-blur = true
+font-size = 14
+
+# --- Aesthetic Enhancements ---
+# Window styling and titlebar matching the dark theme
+window-theme = dark
+
+# Elegant inner padding to give text breathing room
+window-padding-x = 12
+window-padding-y = 12
+window-padding-balance = true
+
+# Adjust line height (vertical spacing) for improved readability
+adjust-cell-height = 20%
+
+# Borderless look (uncomment to hide window titlebar completely)
+# window-decoration = false
+# ------------------------------
+
+
+keybind = opt+h=goto_split:left
+keybind = opt+j=goto_split:bottom	
+keybind = opt+k=goto_split:top
+keybind = opt+l=goto_split:right
+
+keybind = opt+shift+h=new_split:left
+keybind = opt+shift+j=new_split:down
+keybind = opt+shift+k=new_split:up
+keybind = opt+shift+l=new_split:right
+keybind = ctrl+left_bracket=text:\x1b
+keybind = shift+enter=text:\x1b[13;2u
+
+macos-option-as-alt = true
+keybind = alt+up=esc:[1;3A
+keybind = alt+down=esc:[1;3B
+keybind = alt+left=esc:[1;3D
+keybind = alt+right=esc:[1;3C
+
+mouse-hide-while-typing = true
+
+macos-titlebar-proxy-icon = hidden
+# title = " "
+
+custom-shader = ~/.config/ghostty/shaders/cursor.glsl
+
+clipboard-write = allow
