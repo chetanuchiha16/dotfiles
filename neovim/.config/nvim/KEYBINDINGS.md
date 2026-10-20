@@ -107,6 +107,8 @@ Manipulate quotes, brackets, parentheses, and HTML/XML tags around words, lines,
 * `cs)]` : Change `(word)` to `[word]`
 * `ds"` : Delete quotes from `"word"` → `word`
 * `ds)` : Delete parens from `(word)` → `word`
+* `dsf` : **Delete surrounding function call**: `func(something)` → `something`
+* `csf` : **Change surrounding function name**: `func(something)` → prompt for new func name
 * `dst` : Delete surrounding HTML/XML tag: `<div>hello</div>` → `hello`
 * `cst<p>` : Change surrounding tag to `<p>`
 
@@ -121,7 +123,7 @@ Manipulate quotes, brackets, parentheses, and HTML/XML tags around words, lines,
 Perform surgical edits and deletions without manually selecting text or backspacing.
 
 ### A. "Till" (`t`) and "Find" (`f`) Motions
-*Operates from cursor position up to the target character on the line:*
+*Operates from cursor position up to the target character on the line. Targets **any character**: symbols (`(`, `=`, `,`), quotes, letters, numbers, or spaces (`f<Space>`).*
 
 | Shortcut | Action | What it does |
 | :--- | :--- | :--- |
@@ -129,11 +131,15 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | `ct)` | **Change till `)`** | Deletes up to `)` and enters **Insert mode** immediately. |
 | `yt)` | **Yank till `)`** | Copies text from cursor up to `)` into clipboard. |
 | `dt,` | **Delete till `,`** | Deletes up to next comma. |
-| `df)` | **Delete including `)`** | Deletes from cursor up to **and including** `)`. |
-| `df,` | **Delete including `,`** | Deletes from cursor through the comma. |
-| `dT(` | **Delete back till `(`** | Deletes backwards from cursor up to `(`. |
-| `dF(` | **Delete back including `(`** | Deletes backwards through `(`. |
-| `;` / `,` | **Repeat search forward / backward** | Repeats the last `f` or `t` jump in the same or opposite direction. |
+| `df)` | **Delete through `)`** | Deletes from cursor up to **and including** `)`. |
+| `df,` | **Delete through `,`** | Deletes from cursor through the comma. |
+| `cf)` / `cf"` | **Change through char** | Deletes through `)` or `"` and drops into Insert mode. |
+| `yf"` / `yf)` | **Yank through char** | Copies text from cursor through `"` or `)`. |
+| `vf)` / `vf"` | **Select through char** | Visually highlights text from cursor through `)` or `"`. |
+| `dT(` / `dF(` | **Delete back till / through `(`** | Deletes backwards from cursor up to or through `(`. |
+| `T{char}` | **Backward till** | Jumps backward to one character after `{char}`. |
+| `;` / `,` | **Repeat search forward / backward** | Repeats the last `f`, `F`, `t`, or `T` jump. |
+| `{N}f{char}` | **Count jump** | Jump to N-th occurrence (e.g. `2f,` jumps to 2nd comma; `d2f,` deletes through 2nd comma). |
 
 ---
 
@@ -155,7 +161,47 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 7. Buffer & Tab Management
+## 7. Fast Navigation & Motions (No More `jjjj` / `llll`)
+
+### A. Horizontal Movement (Within a line)
+| Shortcut | Action | What it does |
+| :--- | :--- | :--- |
+| `w` / `b` | **Word jump** | Jump to start of next / previous word. |
+| `W` / `B` | **Big Word jump** | Jump across code symbols (`::`, `->`, `.`), jumping strictly by whitespace. |
+| `e` | **End of word** | Jump to end of current/next word. |
+| `f{char}` | **Find character forward** | Jumps directly to `{char}` (e.g. `f(` lands right on the paren). |
+| `F{char}` | **Find character backward** | Jumps backward to `{char}`. |
+| `;` / `,` | **Repeat character jump** | Repeats last `f`/`t` search forward / backward. |
+| `^` / `$` | **Line start / end** | `^` jumps to first non-blank character; `$` jumps to line end. |
+| `0` | **Column 0** | Jumps to absolute line start. |
+
+---
+
+### B. Vertical Movement (Across screen & file)
+| Shortcut | Action | What it does |
+| :--- | :--- | :--- |
+| `Ctrl + d` / `Ctrl + u` | **Half-page scroll** | Smoothly scroll down / up half a screen. |
+| `}` / `{` | **Paragraph / Block jump** | Jump down / up to the next empty line (skips entire functions/blocks). |
+| `H` / `M` / `L` | **Screen Extremes** | Jump to **H**igh (top), **M**iddle, or **L**ow (bottom) of visible screen. |
+| `zz` | **Center screen** | Recenter view so cursor line is in the middle of the screen (`zt` = top, `zb` = bottom). |
+| `{number}G` | **Line number jump** | Jump directly to line number (e.g. `87G` jumps to line 87). |
+| `gg` / `G` | **File Top / Bottom** | `gg` jumps to line 1; `G` jumps to last line. |
+| `%` | **Matching Bracket** | Jump between matching `()`, `{}`, or `[]`. |
+
+---
+
+### C. Search & Jump History
+| Shortcut | Action | What it does |
+| :--- | :--- | :--- |
+| `*` / `#` | **Word under cursor** | Jump to next / previous occurrence of word under cursor. |
+| `/{pattern}` | **Quick search** | Type 2–3 letters + `<Enter>` to jump to any visible word. `n` = next, `N` = prev. |
+| `Ctrl + o` | **Jump Back** | Jump back to previous cursor position (across definitions, searches, files). |
+| `Ctrl + i` | **Jump Forward** | Jump forward in jump list history. |
+| `gi` | **Resume Insert** | Jump to last place you were inserting text and drop into Insert mode. |
+
+---
+
+## 8. Buffer & Tab Management
 
 | Shortcut | Description |
 | :--- | :--- |
@@ -165,7 +211,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 8. Window Splits & Navigation
+## 9. Window Splits & Navigation
 
 | Shortcut | Description |
 | :--- | :--- |
@@ -178,7 +224,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 9. Integrated Terminal
+## 10. Integrated Terminal
 
 | Shortcut | Mode | Description |
 | :--- | :--- | :--- |
@@ -189,7 +235,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 10. Git Integration
+## 11. Git Integration
 
 | Shortcut | Description |
 | :--- | :--- |
@@ -205,7 +251,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 11. Debugging (DAP)
+## 12. Debugging (DAP)
 
 | Shortcut | Action |
 | :--- | :--- |
@@ -222,7 +268,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 12. Neovide GUI Extras
+## 13. Neovide GUI Extras
 
 * **Workspace Restore:** Restores previous workspace and window size automatically on launch.
 * **Font scaling:** In Neovide, use `Ctrl + +` / `Ctrl + -` to dynamically increase or decrease font size.
