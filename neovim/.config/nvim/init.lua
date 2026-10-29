@@ -34,4 +34,5 @@ else
 	require('plugins.autopairs')
 	require('plugins.autotag')
 	require('plugins.surround')
+	require('plugins.grug-far')
 end

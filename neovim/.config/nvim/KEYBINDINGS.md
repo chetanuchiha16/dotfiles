@@ -14,11 +14,22 @@
 | `<leader>fr` | **Resume** last file/grep search | Fzf-Lua |
 | `<leader>fp` | **Projects picker** (switch workspaces) | Snacks.picker |
 | `<leader>fs` | **Saved sessions** / workspaces | Auto-session |
+| `<leader>sr` | **Project Search & Replace** (VS Code style UI) | grug-far.nvim |
+| `<leader>sw` | **Search & Replace word under cursor** | grug-far.nvim |
+| Visual `<leader>sr` | **Search & Replace visual selection** | grug-far.nvim |
 | `<leader>e` | **Toggle File Explorer** (sidebar tree) | Snacks.explorer |
 | `-` | **Open Oil file manager** (edit filesystem like a buffer) | Oil.nvim |
 
+### Inside Search & Replace (`<leader>sr`):
+- Type in `Search:` and `Replace:` (optionally filter with `Files:` or pass `Flags:`)
+- Previews matches in real-time with syntax highlighting and diffs
+- `<Enter>` on any match: Jump to that file and line
+- `<localleader>s` (or `<Space>s`): **Sync / Execute replacement** across all files
+- `q`: Close search window
+
 ### Inside the File Explorer (`<leader>e`):
-- `.` (dot) : **Set folder as workspace root** (focuses on folder under cursor)
+- `Ctrl + c` : **Set folder as workspace** (changes working directory to folder under cursor)
+- `.` (dot) : **Focus view** on folder under cursor
 - `<BS>` (Backspace) : **Go up** to parent directory
 - `a` : **Create** new file (or folder if ending in `/`)
 - `r` : **Rename** file/folder

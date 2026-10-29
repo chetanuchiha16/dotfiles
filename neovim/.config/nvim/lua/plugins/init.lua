@@ -23,4 +23,5 @@ vim.pack.add({
 	'https://github.com/windwp/nvim-ts-autotag',
 	'https://github.com/kylechui/nvim-surround',
 	'https://github.com/mg979/vim-visual-multi',
+	'https://github.com/MagicDuck/grug-far.nvim',
 })
