@@ -5,6 +5,9 @@ vim.o.number = true -- display absolute line number instead of 0
 -- Ensure ~/.local/bin is in PATH for Neovim/Neovide launched from GUI
 vim.env.PATH = vim.fn.expand("$HOME") .. "/.local/bin:" .. vim.env.PATH
 
+-- Live interactive preview for search & replace (VS Code style replacement preview)
+vim.o.inccommand = "split"
+
 -- Case-insensitive searching unless we use capital letters
 vim.o.ignorecase = true
 vim.o.smartcase = true
