@@ -15,19 +15,26 @@
 | `<leader>fp` | **Projects picker** (switch workspaces) | Snacks.picker |
 | `<leader>fs` | **Saved sessions** / workspaces | Auto-session |
 | `<leader>sr` | **Project Search & Replace** (VS Code style UI) | grug-far.nvim |
+| `<leader>sf` | **File Search & Replace** (scoped to current file) | grug-far.nvim |
 | `<leader>sw` | **Search & Replace word under cursor** | grug-far.nvim |
 | Visual `<leader>sr` | **Search & Replace visual selection** | grug-far.nvim |
 | `<leader>e` | **Toggle File Explorer** (sidebar tree) | Snacks.explorer |
 | `-` | **Open Oil file manager** (edit filesystem like a buffer) | Oil.nvim |
 
-### Inside Search & Replace (`<leader>sr`):
-- Type in `Search:` and `Replace:` (optionally filter with `Files:` or pass `Flags:`)
-- Previews matches in real-time with syntax highlighting and diffs
+### Inside Search & Replace (`<leader>sr` / `<leader>sf`):
+- **Inputs:** `Search:`, `Replace:`, `Files:` (glob filter e.g. `src/**`, `*.py`), `Flags:`
+- **VS Code Equivalent Flags in `Flags:` field:**
+  - `Alt + C` (Match Case) &rarr; Type `-s` in `Flags:`
+  - `Alt + W` (Whole Word) &rarr; Type `-w` in `Flags:`
+  - `Alt + R` (Plain String / No Regex) &rarr; Type `-F` in `Flags:`
+  - Combine easily: e.g. `-sw` for whole word + case sensitive
+- **Replace All:** `<localleader>r` (or `<Space>r`) executes replacement across all matches
+- **Sync Line:** `<localleader>l` (or `<Space>l`) syncs only the current line under cursor back to file
+- **Sync All:** `<localleader>s` (or `<Space>s`) syncs all remaining lines back to files (use after deleting lines with `dd`)
+- **Refresh:** `<localleader>f` (or `<Space>f`) re-runs search & refreshes results
+- **Help:** `g?` toggles the full built-in keybindings cheatsheet inside the buffer
 - `<Enter>` on any match: Jump to that file and line
-- `<localleader>r` (or `<Space>r`): **Execute Replace** across all files
-- `<localleader>s` (or `<Space>s`): **Sync line** edits back to file
-- `<localleader>S` (or `<Space>S`): **Sync all** line edits back to files
-- `q`: Close search window
+- `q` or `<Esc>`: Close floating search window
 
 ### Inside the File Explorer (`<leader>e`):
 - `Ctrl + c` : **Set folder as workspace** (changes working directory to folder under cursor)
@@ -52,6 +59,7 @@
 | `gri` | **Find Implementations** (interfaces/traits) | Fzf-Lua LSP |
 | `gra` | **Code Actions** (quick fixes, refactoring) | Fzf-Lua LSP |
 | `<leader>D` | **Show Diagnostics float** (error/warning details) | `vim.diagnostic.open_float()` |
+| `<leader>th` | **Toggle Inlay Hints** (Rust / TypeScript type annotations) | `vim.lsp.inlay_hint` |
 
 ---
 
@@ -243,7 +251,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | :--- | :--- | :--- |
 | `Ctrl + \`` (Ctrl + Backtick) | Normal / Terminal | **Toggle floating terminal** in project root |
 | `<leader>fT` | Normal | **Open terminal in a new Tab** |
-| `Esc Esc` | Terminal | **Exit terminal insert mode** to scroll/navigate |
+| `Esc` / `Ctrl + [` | Terminal | **Exit terminal insert mode** to scroll/navigate |
 | `Ctrl + LeftClick` | Terminal | **Open file path or link** clicked in terminal directly |
 
 ---

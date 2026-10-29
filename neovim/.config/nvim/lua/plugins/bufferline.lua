@@ -8,6 +8,13 @@ require('bufferline').setup({
 		show_buffer_close_icons = true,
 		show_close_icon = false,
 		color_icons = true,
+		custom_filter = function(buf_number)
+			local ft = vim.bo[buf_number].filetype
+			if ft == "grug-far" or ft == "qf" then
+				return false
+			end
+			return true
+		end,
 	}
 })
 
