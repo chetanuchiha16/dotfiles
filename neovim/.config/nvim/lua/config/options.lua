@@ -12,6 +12,10 @@ vim.o.inccommand = "split"
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
+-- Open new splits to the right and below (modern editor behavior)
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+
 -- Sync vim and system clipboards
 vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 
