@@ -45,7 +45,9 @@ vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'LSP Hover Documentation' }
 -- Terminal mode: Ctrl + Left Click on file paths/links opens them directly in Neovim
 vim.keymap.set('t', '<C-LeftMouse>', '<C-\\><C-n><LeftMouse>gF', { desc = 'Go to file under mouse in terminal' })
 
--- Escape terminal mode easily by pressing Esc twice (standard Esc still passes through to terminal)
+-- Escape terminal mode directly with Ctrl+[ or Esc
+vim.keymap.set('t', '<C-[>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Open current active Rustlings exercise
