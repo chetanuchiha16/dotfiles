@@ -24,7 +24,9 @@
 - Type in `Search:` and `Replace:` (optionally filter with `Files:` or pass `Flags:`)
 - Previews matches in real-time with syntax highlighting and diffs
 - `<Enter>` on any match: Jump to that file and line
-- `<localleader>s` (or `<Space>s`): **Sync / Execute replacement** across all files
+- `<localleader>r` (or `<Space>r`): **Execute Replace** across all files
+- `<localleader>s` (or `<Space>s`): **Sync line** edits back to file
+- `<localleader>S` (or `<Space>S`): **Sync all** line edits back to files
 - `q`: Close search window
 
 ### Inside the File Explorer (`<leader>e`):

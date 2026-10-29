@@ -4,8 +4,13 @@ if not ok then
 end
 
 grug_far.setup({
-	-- default options (opens in a comfortable split buffer)
+	-- Open in a comfortable vertical split
 	windowCreationCommand = 'vsplit',
+	-- Debounce time (ms) before triggering live search/diff preview
+	-- Default is 500ms; 150ms makes preview update almost instantly as you type
+	debounceMs = 150,
+	-- Minimum characters required in search before results appear
+	minSearchChars = 1,
 })
 
 -- Keymaps
