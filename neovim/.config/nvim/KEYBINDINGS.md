@@ -266,7 +266,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | `<leader>gH` | **Git Project History** (all commits) |
 | `<leader>gl` | **Git Line History** (blame/log for current line or visual selection) |
 | `<leader>gb` | **Git Browse** (open current file/repo on GitHub) |
-| `<leader>gP` | **Publish to GitHub** (VS Code style Private/Public picker) |
+| `<leader>gp` / `<leader>gP` | **Publish to GitHub** (VS Code style Private/Public picker) |
 | `<leader>ru` | **CodeDiff:** unstaged changes |
 | `<leader>rm` | **CodeDiff:** diff against `main` branch |
 | `<leader>rh` | **CodeDiff:** diff against previous commit (`HEAD~1`) |

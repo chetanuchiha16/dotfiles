@@ -114,4 +114,5 @@ end
 
 vim.api.nvim_create_user_command('PublishToGithub', publish_to_github, { desc = 'Publish repository to GitHub' })
 vim.api.nvim_create_user_command('GhPublish', publish_to_github, { desc = 'Publish repository to GitHub' })
+vim.keymap.set('n', '<leader>gp', publish_to_github, { desc = 'Publish repo to GitHub' })
 vim.keymap.set('n', '<leader>gP', publish_to_github, { desc = 'Publish repo to GitHub' })
