@@ -278,7 +278,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | Shortcut | Mode | Description |
 | :--- | :--- | :--- |
 | `Ctrl + \`` (Ctrl + Backtick) | Normal / Terminal | **Toggle floating terminal** in project root |
-| `<leader>ag` | Normal / Terminal | **Toggle Antigravity (`agy`)** in project root |
+| `<leader>ag` / `Alt + a` | Normal / Terminal | **Toggle Antigravity (`agy`)** (`<leader>ag` in Normal, `Alt + a` in Terminal) |
 | `<leader>fT` | Normal | **Open terminal in a new Tab** |
 | `Double Ctrl + [` / `Double Esc` | Terminal | **Exit terminal mode** to scroll/navigate |
 | `Single Ctrl + [` / `Esc` | Terminal | **Send Escape** directly to CLI app (`agy`, `lazygit`, etc.) |

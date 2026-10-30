@@ -77,7 +77,7 @@ vim.keymap.set("n", "<leader>fT", function()
 end, { desc = "Open Terminal in Tab in Project/Folder" })
 
 -- Antigravity Floating Terminal Toggle
-vim.keymap.set({"n", "t"}, "<leader>ag", function()
+local function toggle_antigravity()
 	Snacks.terminal.toggle("agy", {
 		cwd = get_terminal_cwd(),
 		win = {
@@ -87,4 +87,7 @@ vim.keymap.set({"n", "t"}, "<leader>ag", function()
 			height = 0.85,
 		},
 	})
-end, { desc = "Toggle Antigravity (agy)" })
+end
+
+vim.keymap.set("n", "<leader>ag", toggle_antigravity, { desc = "Toggle Antigravity (agy)" })
+vim.keymap.set("t", "<M-a>", toggle_antigravity, { desc = "Toggle Antigravity (agy)" })
