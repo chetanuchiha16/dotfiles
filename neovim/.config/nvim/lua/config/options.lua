@@ -64,6 +64,14 @@ if vim.g.neovide then
   -- Spacing adjust: Matches adjust-cell-height = 20%
   vim.opt.linespace = 4
 
+  -- Clean, modern window title: Project Name  —  Filename
+  vim.o.title = true
+  vim.o.titlestring = "%{fnamemodify(getcwd(), ':t')}  —  %t%( %m%)"
+
+  -- Match titlebar background and text colors to Tokyo Night
+  vim.g.neovide_title_background_color = "#1a1b26"
+  vim.g.neovide_title_text_color = "#7aa2f7"
+
   -- Remember window size from previous session (VS Code behavior)
   vim.g.neovide_remember_window_size = true
 end

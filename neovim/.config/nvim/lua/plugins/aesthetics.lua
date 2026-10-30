@@ -42,6 +42,9 @@ require('tokyonight').setup({
 		hl['@type'] = { italic = true }
 		hl['@type.builtin'] = { italic = true }
 		hl['@keyword.type'] = { italic = true }
+		-- Remove the patchy blue background boxes on markdown inline code / backticks
+		hl['@markup.raw.markdown_inline'] = { fg = c.blue1, bg = 'none' }
+		hl['RenderMarkdownCodeInline'] = { fg = c.blue1, bg = 'none' }
 	end,
 })
 
@@ -49,7 +52,11 @@ require('tokyonight').setup({
 vim.cmd('colorscheme tokyonight-night')
 
 -- Markdown rendering
-require('render-markdown').setup({})
+require('render-markdown').setup({
+	code = {
+		inline = false, -- Removes patchy blue background boxes on inline code/backticks
+	},
+})
 
 -- Neoscroll (smooth scrolling)
 require('neoscroll').setup({
