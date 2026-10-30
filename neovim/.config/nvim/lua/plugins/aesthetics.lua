@@ -27,7 +27,26 @@ require('kanagawa').setup({
 		}
 	end,
 })
-vim.cmd('colorscheme kanagawa-dragon')
+
+-- Tokyo Night Colorscheme setup
+require('tokyonight').setup({
+	style = 'night', -- 'night' (deep dark), 'storm' (navy), 'moon' (dark blue), 'day' (light)
+	transparent = false,
+	styles = {
+		comments = { italic = true },
+		keywords = { italic = true },
+		functions = {},
+		variables = {},
+	},
+	on_highlights = function(hl, c)
+		hl['@type'] = { italic = true }
+		hl['@type.builtin'] = { italic = true }
+		hl['@keyword.type'] = { italic = true }
+	end,
+})
+
+-- Active colorscheme (e.g. 'tokyonight-night', 'tokyonight-storm', 'kanagawa-dragon')
+vim.cmd('colorscheme tokyonight-night')
 
 -- Markdown rendering
 require('render-markdown').setup({})

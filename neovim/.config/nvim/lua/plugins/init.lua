@@ -11,6 +11,7 @@ vim.pack.add({
 	'https://github.com/esmuellert/codediff.nvim',
 	'https://github.com/goolord/alpha-nvim',
 	'https://github.com/rebelot/kanagawa.nvim',
+	'https://github.com/folke/tokyonight.nvim',
 	'https://github.com/MeanderingProgrammer/render-markdown.nvim',
 	'https://github.com/folke/snacks.nvim',
 	{ src = 'https://github.com/saghen/blink.cmp', version = vim.version.range('1.x') }, -- pinning so rust binary dependency automatically downloads
