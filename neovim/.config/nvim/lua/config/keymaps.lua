@@ -2,6 +2,9 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Clear search highlights on pressing Esc / Ctrl+[ in Normal mode
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlights' })
+
 -- Copy to clipboard shortcuts
 vim.keymap.set('n', '<leader>cp', function()
 	local path = vim.fn.expand('%:p')
@@ -45,10 +48,21 @@ vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'LSP Hover Documentation' }
 -- Terminal mode: Ctrl + Left Click on file paths/links opens them directly in Neovim
 vim.keymap.set('t', '<C-LeftMouse>', '<C-\\><C-n><LeftMouse>gF', { desc = 'Go to file under mouse in terminal' })
 
--- Escape terminal mode directly with Ctrl+[ or Esc
-vim.keymap.set('t', '<C-[>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+-- Double Ctrl+[ to exit terminal mode; single Ctrl+[ sends Escape to CLI tools (agy, etc.)
+local term_esc_timer = nil
+vim.keymap.set('t', '<C-[>', function()
+	if term_esc_timer and term_esc_timer:is_active() then
+		term_esc_timer:stop()
+		term_esc_timer = nil
+		vim.cmd('stopinsert')
+	else
+		term_esc_timer = (vim.uv or vim.loop).new_timer()
+		term_esc_timer:start(250, 0, function()
+			term_esc_timer = nil
+		end)
+		return '<Esc>'
+	end
+end, { expr = true, desc = 'Double Ctrl+[ to exit terminal mode' })
 
 -- Open current active Rustlings exercise
 local function open_current_rustlings_exercise()

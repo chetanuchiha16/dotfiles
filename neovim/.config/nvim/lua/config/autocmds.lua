@@ -15,3 +15,14 @@ vim.api.nvim_create_autocmd('CursorHold', {
 		vim.diagnostic.open_float({ focus = false, scope = 'cursor' })
 	end,
 })
+
+-- Auto-reload files modified externally (essential for Antigravity workflows)
+vim.o.autoread = true
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold' }, {
+	group = vim.api.nvim_create_augroup('antigravity-sync', { clear = true }),
+	callback = function()
+		if vim.fn.mode() ~= 'c' then
+			vim.cmd('checktime')
+		end
+	end,
+})

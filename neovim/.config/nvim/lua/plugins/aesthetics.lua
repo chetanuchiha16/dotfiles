@@ -2,6 +2,11 @@
 require('kanagawa').setup({
 	commentStyle = { italic = true },
 	keywordStyle = { italic = true },
+	statementStyle = { bold = true },
+	typeStyle = { italic = true },
+	variablebuiltinStyle = { italic = true },
+	specialReturn = true,
+	specialException = true,
 	colors = {
 		theme = {
 			all = {
@@ -17,10 +22,12 @@ require('kanagawa').setup({
 			["@keyword.repeat"] = { italic = true },
 			["@keyword.import"] = { italic = true },
 			["@keyword.exception"] = { italic = true },
+			["@keyword.type"] = { italic = true },
+			["@type.builtin"] = { italic = true },
 		}
 	end,
 })
-vim.cmd('colorscheme kanagawa-wave')
+vim.cmd('colorscheme kanagawa-dragon')
 
 -- Markdown rendering
 require('render-markdown').setup({})

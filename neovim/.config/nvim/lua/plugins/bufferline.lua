@@ -18,7 +18,7 @@ require('bufferline').setup({
 	}
 })
 
--- Keymaps for buffer navigation (Tab and Shift+Tab)
-vim.keymap.set('n', '<Tab>', '<Cmd>BufferLineCycleNext<CR>', { desc = 'Next Buffer (Tab)' })
-vim.keymap.set('n', '<S-Tab>', '<Cmd>BufferLineCyclePrev<CR>', { desc = 'Prev Buffer (Shift+Tab)' })
+-- Keymaps for buffer navigation (Ctrl + PageDown / PageUp)
+vim.keymap.set('n', '<C-PageDown>', '<Cmd>BufferLineCycleNext<CR>', { desc = 'Next Buffer (Tab)' })
+vim.keymap.set('n', '<C-PageUp>', '<Cmd>BufferLineCyclePrev<CR>', { desc = 'Prev Buffer (Tab)' })
 vim.keymap.set('n', '<leader>x', '<Cmd>bp | bd #<CR>', { desc = 'Close Buffer' })

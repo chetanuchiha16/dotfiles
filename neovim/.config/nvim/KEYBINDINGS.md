@@ -84,7 +84,7 @@
 | `Ctrl + /` (or `Ctrl + _`) | Normal / Visual | **Toggle comment** line or selection (VS Code style) |
 | `Alt + j` / `Alt + Down` | Normal / Visual / Insert | **Move line/selection down** |
 | `Alt + k` / `Alt + Up` | Normal / Visual / Insert | **Move line/selection up** |
-| `Ctrl + d` | Normal | **Multi-cursor:** select word / next occurrence (VS Code style) |
+| `Alt + d` | Normal | **Multi-cursor:** select word / next occurrence |
 | `Ctrl + Shift + l` | Normal | **Multi-cursor:** select all occurrences (VS Code style) |
 | `Ctrl + Down` / `Ctrl + Up` | Normal | **Multi-cursor:** add vertical cursor column down/up |
 | `<leader>cp` | Normal | **Copy absolute path** of current file |
@@ -92,7 +92,7 @@
 
 ### Multi-Cursor Workflow (`vim-visual-multi`):
 1. **Selecting:**
-   - Put cursor on word and press `Ctrl + d` (repeating adds more matches) or `Ctrl + Shift + l` (all matches).
+   - Put cursor on word and press `Alt + d` (repeating adds more matches) or `Ctrl + Shift + l` (all matches).
    - `q` : **Skip** next match.
    - `Q` : **Remove** current cursor.
 2. **Editing:**
@@ -182,6 +182,19 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
+### C. Line & Block Yanking / Copying (`yy`, `2yy`, `y'a`)
+
+| Shortcut | Action | What it does |
+| :--- | :--- | :--- |
+| `yy` | **Yank line** | Copies current line into clipboard. |
+| `2yy` / `{N}yy` | **Yank N lines** | Copies 2 (or N) lines downward from cursor (e.g. `2yy` or `2y<Down>`). |
+| `y'a` | **Yank to mark `a`** | Copies all lines between cursor and mark `a` (linewise). |
+| `y$` / `Y` | **Yank to line end** | Copies from cursor to end of the line. |
+| `yw` / `y2w` | **Yank word(s)** | Copies current word or next 2 words. |
+| `p` / `P` | **Paste** | Paste after (`p`) or before (`P`) cursor. |
+
+---
+
 ## 7. Fast Navigation & Motions (No More `jjjj` / `llll`)
 
 ### A. Horizontal Movement (Within a line)
@@ -216,9 +229,24 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | :--- | :--- | :--- |
 | `*` / `#` | **Word under cursor** | Jump to next / previous occurrence of word under cursor. |
 | `/{pattern}` | **Quick search** | Type 2–3 letters + `<Enter>` to jump to any visible word. `n` = next, `N` = prev. |
+| `Esc` / `Ctrl + [` | **Clear search highlight** | Dismiss `/` search highlights instantly. |
 | `Ctrl + o` | **Jump Back** | Jump back to previous cursor position (across definitions, searches, files). |
 | `Ctrl + i` | **Jump Forward** | Jump forward in jump list history. |
 | `gi` | **Resume Insert** | Jump to last place you were inserting text and drop into Insert mode. |
+
+---
+
+### D. Marks & Quick Bookmarks (`ma`, `'a`, `` `a ``)
+
+| Shortcut | Action | What it does |
+| :--- | :--- | :--- |
+| `ma` (or `m{a-z}`) | **Set mark** | Sets bookmark `a` at cursor. (Lowercase = file-local, Uppercase `mA` = global). |
+| `'a` | **Jump to mark line** | Jumps to start of line of mark `a`. |
+| `` `a `` | **Jump to exact mark** | Jumps to exact line and column where mark `a` was set. |
+| `y'a` | **Yank to mark** | Copies all lines between cursor and mark `a`. |
+| `d'a` | **Delete to mark** | Deletes all lines between cursor and mark `a`. |
+| `:delmarks a` | **Remove mark** | Deletes mark `a` (`:delm!` clears all lowercase marks in file). |
+| `:marks` | **List marks** | Lists all active marks (or browse with `:FzfLua marks`). |
 
 ---
 
@@ -226,8 +254,8 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 | Shortcut | Description |
 | :--- | :--- |
-| `<Tab>` | **Next buffer / tab** |
-| `<S-Tab>` (Shift + Tab) | **Previous buffer / tab** |
+| `Ctrl + PageDown` | **Next buffer / tab** |
+| `Ctrl + PageUp` | **Previous buffer / tab** |
 | `<leader>x` | **Close active buffer** |
 
 ---
@@ -250,8 +278,10 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | Shortcut | Mode | Description |
 | :--- | :--- | :--- |
 | `Ctrl + \`` (Ctrl + Backtick) | Normal / Terminal | **Toggle floating terminal** in project root |
+| `<leader>ag` | Normal / Terminal | **Toggle Antigravity (`agy`)** in project root |
 | `<leader>fT` | Normal | **Open terminal in a new Tab** |
-| `Esc` / `Ctrl + [` | Terminal | **Exit terminal insert mode** to scroll/navigate |
+| `Double Ctrl + [` / `Double Esc` | Terminal | **Exit terminal mode** to scroll/navigate |
+| `Single Ctrl + [` / `Esc` | Terminal | **Send Escape** directly to CLI app (`agy`, `lazygit`, etc.) |
 | `Ctrl + LeftClick` | Terminal | **Open file path or link** clicked in terminal directly |
 
 ---

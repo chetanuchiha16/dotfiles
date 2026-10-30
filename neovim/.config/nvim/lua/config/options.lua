@@ -68,9 +68,9 @@ if vim.g.neovide then
   vim.g.neovide_remember_window_size = true
 end
 
--- Visual Multi-cursor mappings to match VS Code (Ctrl+D and Ctrl+Shift+L)
+-- Visual Multi-cursor mappings (Alt+d for next occurrence, Ctrl+Shift+L for all)
 vim.g.VM_maps = {
-  ["Find Under"] = "<C-d>",
+  ["Find Under"] = "<M-d>",
   ["Select All"] = "<C-S-l>",
 }
 

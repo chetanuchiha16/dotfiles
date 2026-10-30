@@ -4,6 +4,8 @@
 local ok, install = pcall(require, 'nvim-treesitter.install')
 if ok then
 	install.install({
+		"c",
+		"cpp",
 		"rust",
 		"lua",
 		"vim",
