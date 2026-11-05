@@ -16,6 +16,7 @@ if vim.g.vscode then
 else
 	-- Ordinary Neovim environment
 	require('config.autocmds')
+	require('config.clipboard')
 
 	-- Load plugins declaration
 	require('plugins')

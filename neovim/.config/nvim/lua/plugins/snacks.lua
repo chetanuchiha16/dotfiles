@@ -1,3 +1,62 @@
+-- Switch workspace cleanly like VS Code "Open Folder"
+local function switch_workspace(dir)
+	if not dir or dir == "" then return end
+	dir = vim.fs.normalize(dir)
+
+	-- 1. Auto-save current session before leaving
+	pcall(function()
+		require('auto-session').auto_save_session()
+	end)
+
+	-- 2. Close all split windows so old panes/terminals do not linger
+	vim.cmd('silent! only')
+
+	-- 3. Delete terminal buffers belonging to the old project
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.bo[buf].buftype == 'terminal' then
+			pcall(vim.api.nvim_buf_delete, buf, { force = true })
+		end
+	end
+
+	-- 4. Change current working directory to the new project
+	vim.fn.chdir(dir)
+
+	-- 5. Close old file buffers not belonging to the new project
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted then
+			local bname = vim.api.nvim_buf_get_name(buf)
+			if bname ~= "" and not vim.startswith(vim.fs.normalize(bname), dir) then
+				pcall(vim.api.nvim_buf_delete, buf, { force = true })
+			end
+		end
+	end
+
+	-- 6. Try to restore auto-session for the new project
+	local restored = false
+	pcall(function()
+		local as = require('auto-session')
+		restored = as.auto_restore_session(dir)
+	end)
+
+	-- 7. If no existing session was saved, open a fresh buffer & Explorer
+	if not restored then
+		vim.cmd('enew')
+		vim.schedule(function()
+			Snacks.explorer()
+		end)
+	end
+
+	vim.notify("Workspace switched to: " .. dir, vim.log.levels.INFO)
+end
+
+vim.api.nvim_create_user_command('Workspace', function(opts)
+	if opts.args and opts.args ~= "" then
+		switch_workspace(opts.args)
+	else
+		Snacks.picker.projects()
+	end
+end, { nargs = '?', complete = 'dir', desc = 'Switch workspace cleanly' })
+
 require("snacks").setup({
 	bigfile = { enabled = true },
 	explorer = { enabled = true, replace_netrw = true },
@@ -12,6 +71,29 @@ require("snacks").setup({
 				git_untracked = true,
 				diagnostics = true,
 				diagnostics_open = true,
+			},
+			projects = {
+				confirm = function(picker, item)
+					picker:close()
+					if item and item.file then
+						switch_workspace(item.file)
+					end
+				end,
+				win = {
+					input = {
+						keys = {
+							["<c-e>"] = {
+								function(picker, item)
+									picker:close()
+									if item and item.file then
+										switch_workspace(item.file)
+									end
+								end,
+								mode = { "n", "i" },
+							},
+						},
+					},
+				},
 			},
 		},
 		icons = {
@@ -34,8 +116,35 @@ require("snacks").setup({
 	words = { enabled = true },
 })
 
+-- Dual line numbers: show both Absolute and Relative line numbers side-by-side
+vim.api.nvim_set_hl(0, 'SnacksStatusColumnRel', { link = 'Comment', default = true })
+local sc = Snacks.statuscolumn
+local orig_get = sc._get
+sc._get = function()
+	local ret = orig_get()
+	local win = vim.g.statusline_winid
+	if win and vim.api.nvim_win_is_valid(win) then
+		local nu = vim.wo[win].number
+		local rnu = vim.wo[win].relativenumber
+		if nu and rnu and vim.v.virtnum == 0 then
+			local lnum = vim.v.lnum
+			local relnum = vim.v.relnum
+			local dual
+			if relnum == 0 then
+				dual = '%=%#CursorLineNr#' .. lnum .. ' ' .. string.format('%2d', relnum) .. ' %*'
+			else
+				dual = '%=%#LineNr#' .. lnum .. '%* %#SnacksStatusColumnRel#' .. string.format('%2d', relnum) .. ' %*'
+			end
+			ret = ret:gsub('%%=%d+%s', function() return dual end)
+		end
+	end
+	return ret
+end
+
 -- Snacks Keymaps
 vim.keymap.set("n", "<leader>e", function() Snacks.explorer() end, { desc = "Toggle Snacks Explorer" })
+vim.keymap.set("n", "<leader>xx", function() Snacks.picker.diagnostics() end, { desc = "Workspace Problems (VS Code style)" })
+vim.keymap.set("n", "<leader>xX", function() Snacks.picker.diagnostics_buffer() end, { desc = "Current File Problems" })
 vim.keymap.set("n", "<leader>un", function() Snacks.notifier.hide() end, { desc = "Dismiss Notifications" })
 vim.keymap.set("n", "<leader>nh", function() Snacks.notifier.show_history() end, { desc = "Notification History" })
 vim.keymap.set("n", "<leader>gb", function() Snacks.gitbrowse() end, { desc = "Git Browse" })

@@ -18,8 +18,18 @@ vim.keymap.set('n', '<leader>cr', function()
 	vim.notify('Copied: ' .. path)
 end, { desc = 'Copy relative path' })
 
--- Show diagnostics
+-- Show line diagnostics popup (fast 2-key shortcut on home row; <leader>D also works)
+vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = 'Show line diagnostics' })
 vim.keymap.set('n', '<leader>D', vim.diagnostic.open_float, { desc = 'Show diagnostics' })
+
+-- Jump strictly to red ERRORS (skipping yellow warnings)
+vim.keymap.set('n', ']e', function()
+	vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
+end, { desc = 'Next Error' })
+
+vim.keymap.set('n', '[e', function()
+	vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
+end, { desc = 'Prev Error' })
 
 -- Easily move between windows
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
@@ -36,17 +46,18 @@ vim.keymap.set('v', '<C-_>', 'gc', { remap = true, desc = 'Toggle comment' })
 -- Go to definition on Ctrl + Left Click (matches VS Code)
 vim.keymap.set('n', '<C-LeftMouse>', function()
 	if vim.bo.buftype == 'terminal' then
+		vim.cmd('wincmd v')
 		pcall(vim.cmd, 'normal! gF')
 	else
 		vim.lsp.buf.definition()
 	end
-end, { desc = 'LSP definition or Go to file' })
+end, { desc = 'LSP definition or Go to file in split' })
 
 -- Show documentation/type info on hover (matches K in Vim / hover in VS Code)
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'LSP Hover Documentation' })
 
--- Terminal mode: Ctrl + Left Click on file paths/links opens them directly in Neovim
-vim.keymap.set('t', '<C-LeftMouse>', '<C-\\><C-n><LeftMouse>gF', { desc = 'Go to file under mouse in terminal' })
+-- Terminal mode: Ctrl + Left Click on file paths/links opens them in a vertical split
+vim.keymap.set('t', '<C-LeftMouse>', '<C-\\><C-n><LeftMouse><C-w>v<LeftMouse>gF', { desc = 'Open clicked file in split' })
 
 -- Double Ctrl+[ to exit terminal mode; single Ctrl+[ sends Escape to CLI tools (agy, etc.)
 local term_esc_timer = nil

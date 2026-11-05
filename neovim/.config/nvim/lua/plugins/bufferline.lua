@@ -8,14 +8,41 @@ require('bufferline').setup({
 		show_buffer_close_icons = true,
 		show_close_icon = false,
 		color_icons = true,
+		indicator = {
+			style = "underline",
+		},
 		custom_filter = function(buf_number)
 			local ft = vim.bo[buf_number].filetype
+			local bt = vim.bo[buf_number].buftype
 			if ft == "grug-far" or ft == "qf" then
 				return false
 			end
-			return true
+
+			-- Always keep terminal tabs alive and visible in the tab bar
+			if bt == "terminal" then
+				return true
+			end
+
+			-- Isolate other file tabs strictly to the active workspace / folder
+			local buf_path = vim.api.nvim_buf_get_name(buf_number)
+			if buf_path == "" then
+				return true -- Keep new unnamed scratch buffers visible
+			end
+
+			local cwd = vim.fs.normalize(vim.fn.getcwd())
+			local normalized_buf = vim.fs.normalize(buf_path)
+			return vim.startswith(normalized_buf, cwd)
 		end,
-	}
+	},
+	highlights = {
+		buffer_selected = {
+			italic = false,
+			bold = true,
+		},
+		buffer_visible = {
+			italic = false,
+		},
+	},
 })
 
 -- Keymaps for buffer navigation (Ctrl + PageDown / PageUp)

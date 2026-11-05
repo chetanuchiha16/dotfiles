@@ -12,6 +12,7 @@
 | `<leader>/` | **Live Grep** (search text across all files) | Fzf-Lua |
 | `<leader>,` | **Switch open buffers** | Fzf-Lua |
 | `<leader>fr` | **Resume** last file/grep search | Fzf-Lua |
+| `<leader>fy` | **Clipboard / Yank history** (search & paste) | Fzf-Lua |
 | `<leader>fp` | **Projects picker** (switch workspaces) | Snacks.picker |
 | `<leader>fs` | **Saved sessions** / workspaces | Auto-session |
 | `<leader>sr` | **Project Search & Replace** (VS Code style UI) | grug-far.nvim |
@@ -55,9 +56,16 @@
 | `K` | **Hover Documentation** (types, docstrings, signature) | `vim.lsp.buf.hover()` *(Press twice to enter window)* |
 | `<C-LeftMouse>` | **Go to Definition** (like VS Code Ctrl+Click) | `vim.lsp.buf.definition()` |
 | `gd` | **Go to Definition** (fuzzy picker if multiple) | Fzf-Lua LSP |
+| `<leader>vd` | **Go to Definition in vsplit** | Splits vertically & jumps |
 | `grr` | **Find References** across project | Fzf-Lua LSP |
 | `gri` | **Find Implementations** (interfaces/traits) | Fzf-Lua LSP |
+| `<leader>vi` | **Go to Implementation in vsplit** | Splits vertically & jumps |
 | `gra` | **Code Actions** (quick fixes, refactoring) | Fzf-Lua LSP |
+| `]d` / `[d` | **Next / Prev Problem** (errors, warnings) | Built-in jump + auto-hover float |
+| `]e` / `[e` | **Next / Prev Error only** (skips warnings) | `vim.diagnostic.jump(ERROR)` |
+| `<leader>xx` | **Workspace Problems** (VS Code style panel) | `Snacks.picker.diagnostics()` |
+| `<leader>xX` | **Current File Problems** | `Snacks.picker.diagnostics_buffer()` |
+| `gl` | **Show Line Diagnostics popup** (fast 2-key shortcut on home row) | `vim.diagnostic.open_float()` |
 | `<leader>D` | **Show Diagnostics float** (error/warning details) | `vim.diagnostic.open_float()` |
 | `<leader>th` | **Toggle Inlay Hints** (Rust / TypeScript type annotations) | `vim.lsp.inlay_hint` |
 
@@ -77,7 +85,26 @@
 
 ---
 
-## 4. Editing, Comments & Multi-Cursor
+## 4. Insert Mode Superpowers
+
+Fast edits, deletions, and actions without leaving Insert mode:
+
+| Shortcut | Action | Description |
+| :--- | :--- | :--- |
+| `Ctrl + w` | **Delete word backwards** | Deletes the previous word (no more mashing Backspace) |
+| `Ctrl + u` | **Delete line backwards** | Wipes all text from cursor back to the start of the line |
+| `Ctrl + r` then `"` | **Paste last yank** | Inserts what you copied in Neovim right where you are typing |
+| `Ctrl + r` then `+` | **Paste system clipboard** | Inserts text copied from browser/outside apps (`Ctrl + C`) |
+| `Ctrl + r` then `=` | **Inline Calculator** | Evaluates a math expression (e.g. `1024 / 4`) and inserts result |
+| `Ctrl + o` | **One-shot Normal command** | Runs 1 Normal mode command (e.g. `Ctrl+o A` to jump to line end) |
+| `Alt + j` / `Alt + Down` | **Move line down** | Slides current line down (works in Normal, Visual, and Insert) |
+| `Alt + k` / `Alt + Up` | **Move line up** | Slides current line up (works in Normal, Visual, and Insert) |
+| `Ctrl + t` | **Indent line right** | Adds one indent level (tab/spaces) |
+| `Ctrl + d` | **Unindent line left** | Shifts current line back one indent level |
+
+---
+
+## 5. Editing, Comments & Multi-Cursor
 
 | Shortcut | Mode | Description |
 | :--- | :--- | :--- |
@@ -106,7 +133,7 @@
 
 ---
 
-## 5. Surround Text Objects (`nvim-surround`)
+## 6. Surround Text Objects (`nvim-surround`)
 
 Manipulate quotes, brackets, parentheses, and HTML/XML tags around words, lines, or selections.
 
@@ -139,7 +166,7 @@ Manipulate quotes, brackets, parentheses, and HTML/XML tags around words, lines,
 
 ---
 
-## 6. Precise Deletions & Text Objects (`dt`, `df`, `di`, `da`)
+## 7. Precise Deletions & Text Objects (`dt`, `df`, `di`, `da`)
 
 Perform surgical edits and deletions without manually selecting text or backspacing.
 
@@ -192,10 +219,12 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | `y$` / `Y` | **Yank to line end** | Copies from cursor to end of the line. |
 | `yw` / `y2w` | **Yank word(s)** | Copies current word or next 2 words. |
 | `p` / `P` | **Paste** | Paste after (`p`) or before (`P`) cursor. |
+| `"0p` | **Paste last yanked** | Pastes last explicit yank (ignores anything deleted with `d` / `x`). |
+| `<leader>fy` | **Clipboard history** | Search all previous copies/yanks and press `<Enter>` to paste. |
 
 ---
 
-## 7. Fast Navigation & Motions (No More `jjjj` / `llll`)
+## 8. Fast Navigation & Motions (No More `jjjj` / `llll`)
 
 ### A. Horizontal Movement (Within a line)
 | Shortcut | Action | What it does |
@@ -250,7 +279,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 8. Buffer & Tab Management
+## 9. Buffer & Tab Management
 
 | Shortcut | Description |
 | :--- | :--- |
@@ -260,7 +289,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 9. Window Splits & Navigation
+## 10. Window Splits & Navigation
 
 | Shortcut | Description |
 | :--- | :--- |
@@ -269,11 +298,16 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | `Ctrl + j` | Focus **lower window** |
 | `Ctrl + k` | Focus **upper window** |
 | `:vsplit` / `:split` | Create vertical / horizontal split |
+| `<leader>vd` | Open **definition in vertical split** |
+| `<leader>vi` | Open **implementation in vertical split** |
 | `:close` | Close current window split |
+
+> **Pro Tip in Pickers (`Fzf`):**
+> When inside any file or search picker (`<leader><leader>`, `<leader>/`, `grr`), press **`Ctrl + v`** instead of `<Enter>` to open that file directly in a vertical split (`Ctrl + s` for horizontal split).
 
 ---
 
-## 10. Integrated Terminal
+## 11. Integrated Terminal
 
 | Shortcut | Mode | Description |
 | :--- | :--- | :--- |
@@ -282,11 +316,11 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | `<leader>fT` | Normal | **Open terminal in a new Tab** |
 | `Double Ctrl + [` / `Double Esc` | Terminal | **Exit terminal mode** to scroll/navigate |
 | `Single Ctrl + [` / `Esc` | Terminal | **Send Escape** directly to CLI app (`agy`, `lazygit`, etc.) |
-| `Ctrl + LeftClick` | Terminal | **Open file path or link** clicked in terminal directly |
+| `Ctrl + LeftClick` | Terminal | **Open file path or compiler error** clicked in terminal in a vertical split |
 
 ---
 
-## 11. Git Integration
+## 12. Git Integration
 
 | Shortcut | Description |
 | :--- | :--- |
@@ -303,7 +337,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 12. Debugging (DAP)
+## 13. Debugging (DAP)
 
 | Shortcut | Action |
 | :--- | :--- |
@@ -320,7 +354,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-## 13. Neovide GUI Extras
+## 14. Neovide GUI Extras
 
 * **Workspace Restore:** Restores previous workspace and window size automatically on launch.
 * **Font scaling:** In Neovide, use `Ctrl + +` / `Ctrl + -` to dynamically increase or decrease font size.

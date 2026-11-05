@@ -26,3 +26,12 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold' }, {
 		end
 	end,
 })
+
+-- Keep terminal buffers running in background even if another buffer is opened
+vim.api.nvim_create_autocmd('TermOpen', {
+	group = vim.api.nvim_create_augroup('keep-terminals-alive', { clear = true }),
+	callback = function(event)
+		vim.bo[event.buf].bufhidden = 'hide'
+	end,
+})
+
