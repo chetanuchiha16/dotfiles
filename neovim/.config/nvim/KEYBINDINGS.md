@@ -202,6 +202,7 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | **Curly Braces `{...}`** | `di}` or `diB` *(clears block body)* | `da}` or `daB` *(deletes braces + body)* |
 | **Square Brackets `[...]`** | `di]` *(clears array/slice contents)* | `da]` *(deletes brackets + contents)* |
 | **HTML/XML Tags `<tag>...</tag>`** | `dit` *(clears tag contents)* | `dat` *(deletes entire tag + contents)* |
+| **Paragraph / Function (`p`)** | `dip` *(clears function/block)* | `dap` *(cuts function/block + trailing blank line)* |
 | **Words** | `diw` *(deletes word only)* | `daw` *(deletes word + trailing space)* |
 
 > **Pro Tip with `c` (Change):**
@@ -214,6 +215,9 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | Shortcut | Action | What it does |
 | :--- | :--- | :--- |
 | `yy` | **Yank line** | Copies current line into clipboard. |
+| `yap` | **Yank function / block** | Copies entire function/paragraph + blank line (separated by empty lines). |
+| `yip` | **Yank inner function / block** | Copies function/paragraph without the trailing empty line. |
+| `ya}` / `yaB` | **Yank `{}` block** | Copies everything enclosed in curly braces including the braces. |
 | `2yy` / `{N}yy` | **Yank N lines** | Copies 2 (or N) lines downward from cursor (e.g. `2yy` or `2y<Down>`). |
 | `y'a` | **Yank to mark `a`** | Copies all lines between cursor and mark `a` (linewise). |
 | `y$` / `Y` | **Yank to line end** | Copies from cursor to end of the line. |
@@ -297,10 +301,12 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | `Ctrl + l` | Focus **right window** |
 | `Ctrl + j` | Focus **lower window** |
 | `Ctrl + k` | Focus **upper window** |
-| `:vsplit` / `:split` | Create vertical / horizontal split |
+| `:vsplit` / `:split` | Create vertical / horizontal split (`<C-w>v` / `<C-w>s`) |
 | `<leader>vd` | Open **definition in vertical split** |
 | `<leader>vi` | Open **implementation in vertical split** |
-| `:close` | Close current window split |
+| `<leader>wc` / `:close` | **Close current split** window (`<C-w>c`) |
+| `<leader>wo` / `:only` | **Close all other splits** (keep active window only) |
+| `<leader>z` | **Toggle Zoom / Maximize** active split full-screen |
 
 > **Pro Tip in Pickers (`Fzf`):**
 > When inside any file or search picker (`<leader><leader>`, `<leader>/`, `grr`), press **`Ctrl + v`** instead of `<Enter>` to open that file directly in a vertical split (`Ctrl + s` for horizontal split).
@@ -311,8 +317,10 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 | Shortcut | Mode | Description |
 | :--- | :--- | :--- |
-| `Ctrl + \`` (Ctrl + Backtick) | Normal / Terminal | **Toggle floating terminal** in project root |
-| `<leader>ag` / `Alt + a` | Normal / Terminal | **Toggle Antigravity (`agy`)** (`<leader>ag` in Normal, `Alt + a` in Terminal) |
+| `Ctrl + \`` / `Ctrl + ~` | Normal / Terminal | **Smart toggle floating terminal** (hides if inside, opens if outside) |
+| `<leader>tr` | Normal | **Toggle Right-Panel Terminal** (side split) |
+| `<leader>ag` / `Alt + a` | Normal / Terminal | **Toggle Antigravity (`agy` float)** |
+| `<leader>ar` / `Alt + r` | Normal / Terminal | **Toggle Antigravity in Right Panel** (side split) |
 | `<leader>fT` | Normal | **Open terminal in a new Tab** |
 | `Double Ctrl + [` / `Double Esc` | Terminal | **Exit terminal mode** to scroll/navigate |
 | `Single Ctrl + [` / `Esc` | Terminal | **Send Escape** directly to CLI app (`agy`, `lazygit`, etc.) |

@@ -68,13 +68,11 @@ function M.open()
 		end
 
 		local lines_count = select(2, item.data:gsub('\n', '\n')) + 1
-		local label = first_line
-		if lines_count > 1 then
-			label = string.format('[%d lines] %s', lines_count, first_line)
-		end
 
 		table.insert(items, {
-			text = label,
+			text = item.data,
+			label = first_line,
+			lines_count = lines_count,
 			data = item.data,
 			regtype = item.regtype,
 			preview = {
@@ -92,6 +90,16 @@ function M.open()
 	Snacks.picker({
 		title = 'Clipboard / Yank History',
 		items = items,
+		format = function(item)
+			local ret = {}
+			ret[#ret + 1] = { '󰅍 ', 'Special' }
+			if item.lines_count and item.lines_count > 1 then
+				ret[#ret + 1] = { string.format('[%dL] ', item.lines_count), 'Comment' }
+			end
+			ret[#ret + 1] = { item.label or item.text, 'Normal' }
+			return ret
+		end,
+		preview = 'preview',
 		confirm = function(picker, item)
 			picker:close()
 			if item then

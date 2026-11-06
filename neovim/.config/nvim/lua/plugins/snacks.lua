@@ -176,18 +176,57 @@ local function get_terminal_cwd()
 	return vim.fn.getcwd()
 end
 
--- Terminal mappings (Ctrl + Backtick)
-vim.keymap.set({"n", "t"}, "<C-`>", function()
-	Snacks.terminal.toggle(nil, { cwd = get_terminal_cwd() })
-end, { desc = "Toggle Floating Terminal in Project/Folder" })
+-- Smart Floating Terminal Toggle (Ctrl + Backtick / Ctrl + ~)
+local function toggle_floating_terminal()
+	-- If currently inside ANY terminal, simply close/hide its window!
+	if vim.bo.buftype == "terminal" then
+		vim.cmd("hide")
+		return
+	end
+
+	-- If a floating terminal is already visible anywhere on screen, hide it
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local buf = vim.api.nvim_win_get_buf(win)
+		if vim.bo[buf].buftype == "terminal" and vim.api.nvim_win_get_config(win).relative ~= "" then
+			vim.api.nvim_win_hide(win)
+			return
+		end
+	end
+
+	Snacks.terminal.toggle(nil, { count = 1, cwd = get_terminal_cwd() })
+end
+
+vim.keymap.set({"n", "t"}, "<C-`>", toggle_floating_terminal, { desc = "Toggle Floating Terminal" })
+vim.keymap.set({"n", "t"}, "<C-~>", toggle_floating_terminal, { desc = "Toggle Floating Terminal" })
 
 vim.keymap.set("n", "<leader>fT", function()
 	Snacks.terminal.open(nil, { cwd = get_terminal_cwd() })
 end, { desc = "Open Terminal in Tab in Project/Folder" })
 
+-- Right-Panel Terminal (Side Split Toggle)
+local function toggle_side_terminal()
+	Snacks.terminal.toggle(nil, {
+		count = 2,
+		cwd = get_terminal_cwd(),
+		win = {
+			position = "right",
+			width = 0.45,
+		},
+	})
+end
+
+vim.keymap.set("n", "<leader>tr", toggle_side_terminal, { desc = "Toggle Right-Panel Terminal" })
+
 -- Antigravity Floating Terminal Toggle
 local function toggle_antigravity()
+	-- If right-panel agy is currently open, hide it first
+	local side_term = Snacks.terminal.get("agy", { count = 4, create = false })
+	if side_term and side_term:win_valid() then
+		side_term:hide()
+	end
+
 	Snacks.terminal.toggle("agy", {
+		count = 3,
 		cwd = get_terminal_cwd(),
 		win = {
 			position = "float",
@@ -198,5 +237,30 @@ local function toggle_antigravity()
 	})
 end
 
-vim.keymap.set("n", "<leader>ag", toggle_antigravity, { desc = "Toggle Antigravity (agy)" })
-vim.keymap.set("t", "<M-a>", toggle_antigravity, { desc = "Toggle Antigravity (agy)" })
+-- Antigravity Right-Panel Toggle
+local function toggle_antigravity_side()
+	-- If floating agy is currently open, hide it first
+	local float_term = Snacks.terminal.get("agy", { count = 3, create = false })
+	if float_term and float_term:win_valid() then
+		float_term:hide()
+	end
+
+	Snacks.terminal.toggle("agy", {
+		count = 4,
+		cwd = get_terminal_cwd(),
+		win = {
+			position = "right",
+			width = 0.45,
+		},
+	})
+end
+
+vim.keymap.set("n", "<leader>ag", toggle_antigravity, { desc = "Toggle Antigravity (agy float)" })
+vim.keymap.set("t", "<M-a>", toggle_antigravity, { desc = "Toggle Antigravity (agy float)" })
+vim.keymap.set("n", "<leader>ar", toggle_antigravity_side, { desc = "Toggle Antigravity (agy right panel)" })
+vim.keymap.set("t", "<M-r>", toggle_antigravity_side, { desc = "Toggle Antigravity (agy right panel)" })
+
+-- Split Window Management & Zoom
+vim.keymap.set("n", "<leader>wc", "<Cmd>close<CR>", { desc = "Close current split window" })
+vim.keymap.set("n", "<leader>wo", "<Cmd>only<CR>", { desc = "Close all other splits (Keep only this)" })
+vim.keymap.set("n", "<leader>z", function() Snacks.zen.zoom() end, { desc = "Toggle Zoom / Maximize active split" })
