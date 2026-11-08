@@ -31,11 +31,16 @@ vim.keymap.set('n', '[e', function()
 	vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
 end, { desc = 'Prev Error' })
 
--- Easily move between windows
+-- Easily move between windows (Normal & Terminal mode)
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+vim.keymap.set('t', '<C-h>', '<C-\\><C-n><C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('t', '<C-l>', '<C-\\><C-n><C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('t', '<C-j>', '<C-\\><C-n><C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('t', '<C-k>', '<C-\\><C-n><C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Commenting mappings (matches VS Code's Ctrl + /)
 vim.keymap.set('n', '<C-/>', 'gcc', { remap = true, desc = 'Toggle comment line' })
@@ -58,6 +63,10 @@ vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'LSP Hover Documentation' }
 
 -- Terminal mode: Ctrl + Left Click on file paths/links opens them in a vertical split
 vim.keymap.set('t', '<C-LeftMouse>', '<C-\\><C-n><LeftMouse><C-w>v<LeftMouse>gF', { desc = 'Open clicked file in split' })
+
+-- Exit terminal mode directly into Normal mode (1-stroke without delay)
+vim.keymap.set('t', '<M-q>', '<C-\\><C-n>', { desc = 'Exit terminal mode to Normal mode' })
+vim.keymap.set('t', '<M-Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode to Normal mode' })
 
 -- Double Ctrl+[ to exit terminal mode; single Ctrl+[ sends Escape to CLI tools (agy, etc.)
 local term_esc_timer = nil
@@ -135,10 +144,13 @@ vim.keymap.set('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi', { desc = 'Move line up' 
 vim.keymap.set('i', '<A-Down>', '<esc><cmd>m .+1<cr>==gi', { desc = 'Move line down' })
 vim.keymap.set('i', '<A-Up>', '<esc><cmd>m .-2<cr>==gi', { desc = 'Move line up' })
 
--- Open personal keybindings cheatsheet
+-- Open personal keybindings cheatsheet (press 'q' or '<Esc>' to close)
 vim.keymap.set('n', '<leader>?', function()
 	local file = vim.fn.stdpath('config') .. '/KEYBINDINGS.md'
 	vim.cmd('view ' .. vim.fn.fnameescape(file))
+	local bufnr = vim.api.nvim_get_current_buf()
+	vim.keymap.set('n', 'q', '<Cmd>bd<CR>', { buffer = bufnr, silent = true, desc = 'Close cheatsheet' })
+	vim.keymap.set('n', '<Esc>', '<Cmd>bd<CR>', { buffer = bufnr, silent = true, desc = 'Close cheatsheet' })
 end, { desc = 'Open Keybindings Cheatsheet' })
 
 -- Toggle Inlay Hints (Rust / LSP type annotations)

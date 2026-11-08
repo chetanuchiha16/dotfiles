@@ -22,6 +22,56 @@ vim.keymap.set('v', '<leader>gl', function()
 	git_line_history(vim.fn.line('v'), vim.fn.line('.'))
 end, { desc = 'Git line history' })
 
+-- Gitsigns Setup (VS Code-like gutter diff indicators and hunk actions)
+local ok, gitsigns = pcall(require, 'gitsigns')
+if ok then
+	gitsigns.setup({
+		signs = {
+			add          = { text = '▎' },
+			change       = { text = '▎' },
+			delete       = { text = '' },
+			topdelete    = { text = '' },
+			changedelete = { text = '▎' },
+			untracked    = { text = '▎' },
+		},
+		signs_staged = {
+			add          = { text = '▎' },
+			change       = { text = '▎' },
+			delete       = { text = '' },
+			topdelete    = { text = '' },
+			changedelete = { text = '▎' },
+		},
+		on_attach = function(bufnr)
+			local gs = package.loaded.gitsigns
+
+			-- Navigation between git changes (VS Code style)
+			vim.keymap.set('n', ']c', function()
+				if vim.wo.diff then return ']c' end
+				vim.schedule(function() gs.next_hunk() end)
+				return '<Ignore>'
+			end, { expr = true, buffer = bufnr, desc = 'Next Git change' })
+
+			vim.keymap.set('n', '[c', function()
+				if vim.wo.diff then return '[c' end
+				vim.schedule(function() gs.prev_hunk() end)
+				return '<Ignore>'
+			end, { expr = true, buffer = bufnr, desc = 'Previous Git change' })
+
+			-- Actions (VS Code gutter click equivalent)
+			vim.keymap.set('n', '<leader>hp', gs.preview_hunk, { buffer = bufnr, desc = 'Preview Git change diff' })
+			vim.keymap.set('n', '<leader>hs', gs.stage_hunk, { buffer = bufnr, desc = 'Stage Git hunk' })
+			vim.keymap.set('n', '<leader>hr', gs.reset_hunk, { buffer = bufnr, desc = 'Reset Git hunk' })
+			vim.keymap.set('v', '<leader>hs', function() gs.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, { buffer = bufnr, desc = 'Stage selected lines' })
+			vim.keymap.set('v', '<leader>hr', function() gs.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, { buffer = bufnr, desc = 'Reset selected lines' })
+			vim.keymap.set('n', '<leader>hS', gs.stage_buffer, { buffer = bufnr, desc = 'Stage entire buffer' })
+			vim.keymap.set('n', '<leader>hR', gs.reset_buffer, { buffer = bufnr, desc = 'Reset entire buffer' })
+			vim.keymap.set('n', '<leader>hb', function() gs.blame_line({ full = true }) end, { buffer = bufnr, desc = 'Git blame line popup' })
+			vim.keymap.set('n', '<leader>tb', gs.toggle_current_line_blame, { buffer = bufnr, desc = 'Toggle inline Git blame' })
+			vim.keymap.set('n', '<leader>hd', gs.diffthis, { buffer = bufnr, desc = 'Diff buffer against index' })
+		end,
+	})
+end
+
 -- Codediff Setup
 require("codediff").setup({})
 vim.keymap.set('n', '<leader>ru', '<cmd>CodeDiff<cr>', { desc = 'Code diff not staged' })

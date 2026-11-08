@@ -220,12 +220,12 @@ vim.keymap.set("n", "<leader>tr", toggle_side_terminal, { desc = "Toggle Right-P
 -- Antigravity Floating Terminal Toggle
 local function toggle_antigravity()
 	-- If right-panel agy is currently open, hide it first
-	local side_term = Snacks.terminal.get("agy", { count = 4, create = false })
+	local side_term = Snacks.terminal.get("agy -c", { count = 4, create = false })
 	if side_term and side_term:win_valid() then
 		side_term:hide()
 	end
 
-	Snacks.terminal.toggle("agy", {
+	Snacks.terminal.toggle("agy -c", {
 		count = 3,
 		cwd = get_terminal_cwd(),
 		win = {
@@ -240,12 +240,12 @@ end
 -- Antigravity Right-Panel Toggle
 local function toggle_antigravity_side()
 	-- If floating agy is currently open, hide it first
-	local float_term = Snacks.terminal.get("agy", { count = 3, create = false })
+	local float_term = Snacks.terminal.get("agy -c", { count = 3, create = false })
 	if float_term and float_term:win_valid() then
 		float_term:hide()
 	end
 
-	Snacks.terminal.toggle("agy", {
+	Snacks.terminal.toggle("agy -c", {
 		count = 4,
 		cwd = get_terminal_cwd(),
 		win = {

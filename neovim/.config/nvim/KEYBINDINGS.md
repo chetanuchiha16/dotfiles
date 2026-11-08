@@ -210,17 +210,19 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 ---
 
-### C. Line & Block Yanking / Copying (`yy`, `2yy`, `y'a`)
+### C. Line-End Actions & Block Yanking (`D`, `C`, `Y`, `yap`)
 
 | Shortcut | Action | What it does |
 | :--- | :--- | :--- |
+| `D` / `d$` | **Delete to line end** | Deletes from cursor to the end of the line (e.g. `f=D` clears after `=`). |
+| `C` / `c$` | **Change to line end** | Deletes to line end and drops into **Insert mode** to type replacement. |
+| `Y` / `y$` | **Yank to line end** | Copies from cursor to end of the line. |
 | `yy` | **Yank line** | Copies current line into clipboard. |
 | `yap` | **Yank function / block** | Copies entire function/paragraph + blank line (separated by empty lines). |
 | `yip` | **Yank inner function / block** | Copies function/paragraph without the trailing empty line. |
 | `ya}` / `yaB` | **Yank `{}` block** | Copies everything enclosed in curly braces including the braces. |
 | `2yy` / `{N}yy` | **Yank N lines** | Copies 2 (or N) lines downward from cursor (e.g. `2yy` or `2y<Down>`). |
 | `y'a` | **Yank to mark `a`** | Copies all lines between cursor and mark `a` (linewise). |
-| `y$` / `Y` | **Yank to line end** | Copies from cursor to end of the line. |
 | `yw` / `y2w` | **Yank word(s)** | Copies current word or next 2 words. |
 | `p` / `P` | **Paste** | Paste after (`p`) or before (`P`) cursor. |
 | `"0p` | **Paste last yanked** | Pastes last explicit yank (ignores anything deleted with `d` / `x`). |
@@ -322,7 +324,9 @@ Perform surgical edits and deletions without manually selecting text or backspac
 | `<leader>ag` / `Alt + a` | Normal / Terminal | **Toggle Antigravity (`agy` float)** |
 | `<leader>ar` / `Alt + r` | Normal / Terminal | **Toggle Antigravity in Right Panel** (side split) |
 | `<leader>fT` | Normal | **Open terminal in a new Tab** |
-| `Double Ctrl + [` / `Double Esc` | Terminal | **Exit terminal mode** to scroll/navigate |
+| `Alt + q` / `Alt + Esc` | Terminal | **Instant exit to Normal mode** (1-stroke, no timer delay) |
+| `Ctrl + h / l / j / k` | Normal / Terminal | **Jump between windows** (e.g. jump from terminal straight to code) |
+| `Double Ctrl + [` / `Double Esc` | Terminal | **Exit terminal mode** (fallback) |
 | `Single Ctrl + [` / `Esc` | Terminal | **Send Escape** directly to CLI app (`agy`, `lazygit`, etc.) |
 | `Ctrl + LeftClick` | Terminal | **Open file path or compiler error** clicked in terminal in a vertical split |
 
@@ -332,6 +336,12 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 | Shortcut | Description |
 | :--- | :--- |
+| `]c` / `[c` | **Next / Previous Git change** (jump between diff hunks) |
+| `<leader>hp` | **Preview Git diff** (floating popup of change at cursor, like VS Code gutter click) |
+| `<leader>hs` / `<leader>hr` | **Stage / Reset Git hunk** (supports normal & visual mode) |
+| `<leader>hS` / `<leader>hR` | **Stage / Reset entire buffer** |
+| `<leader>tb` | **Toggle inline Git blame** |
+| `<leader>hb` | **Git blame line popup** |
 | `<leader>gg` | **Open LazyGit** full terminal UI |
 | `<leader>gd` | **Diffview Open** (VS Code-like git staging and file diffs) |
 | `<leader>gh` | **Git File History** (commits modifying current file) |
@@ -366,4 +376,4 @@ Perform surgical edits and deletions without manually selecting text or backspac
 
 * **Workspace Restore:** Restores previous workspace and window size automatically on launch.
 * **Font scaling:** In Neovide, use `Ctrl + +` / `Ctrl + -` to dynamically increase or decrease font size.
-* **Cheatsheet Shortcut:** `<leader>?` opens this cheatsheet directly inside Neovim.
+* **Cheatsheet Shortcut:** `<leader>?` opens this cheatsheet directly inside Neovim (press **`q`** or **`<Esc>`** to close it).
